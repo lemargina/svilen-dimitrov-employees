@@ -5,7 +5,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use App\CsvReader;
 use App\DateParser;
-use App\IntervalMerger;
+use App\TimeCombiner;
 use App\PairFinder;
 use App\Dashboard;
 
@@ -41,7 +41,7 @@ $parser = new DateParser();
 $reader = new CsvReader($parser);
 $rows   = $reader->read($tmpPath);
 
-$rows = (new IntervalMerger())->merge($rows);
+$rows = (new TimeCombiner())->merge($rows);
 
 [$projects, $ids] = (new PairFinder())->find($rows);
 
