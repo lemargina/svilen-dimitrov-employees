@@ -67,7 +67,7 @@ Sample input: `employeess.csv`, sample.csv
    same (employee, project), so they aren't double-counted.
 5. `PairFinder` groups rows by project, finds all pairs whose
    periods overlap, and accumulates days per (pair, project).
-6. `` sums days per pair, finds the maximum, and prints
+6. `Dashboard` sums days per pair, finds the maximum, and prints
    the winners plus a table of their common projects.
 
 ## Output
@@ -88,6 +88,10 @@ Sample input: `employeess.csv`, sample.csv
  - `Dashboard` — knows nothing about parsing or math, only HTML.
 - `index.php` — the only place that knows the order.entry point
 
+At the very end of repo,  there is a single file called zadacha_withoutFRONTEND.php, which is CLI procedural version of task.
+You can start it by going to it by cmd, and write: php -q  zadacha_withoutFRONTEND.php
+The first line in the file is called $filename where your put your sample.csv like this:  $filename="sample.csv"
+It was must starting point before creating the OOP version, so I can understand the algorithm first.
 
  Some problems you could face, try starting the project: 
 
