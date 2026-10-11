@@ -43,7 +43,7 @@ Then run:
     
         src/DateParser.php      normalizes any date string to Y-m-d
         src/CsvReader.php       reads the CSV into an array of rows
-        src/IntervalMerger.php  merges overlapping periods per (emp, project)
+        src/TimeCombiner.php  merges overlapping periods per (emp, project)
         src/PairFinder.php    finds overlapping pairs per project
        src/Dashboard.php          picks the winner and prints the HTML
 
@@ -61,9 +61,9 @@ Sample input: `employeess.csv`, sample.csv
 
 1. `index.php` validates the upload and instantiates the classes.
 2. `DateParser` normalizes every date string to `Y-m-d`.
-3. `CsvReader` reads the file, skips invalid rows, and returns
+3. `CsvFileReader` reads the file, skips invalid rows, and returns
    an array of clean rows: `['emp','project','from','to','start','end']`.
-4. `IntervalMerger` sorts and merges overlapping periods for the
+4. `TimeCombiner` sorts and merges overlapping periods for the
    same (employee, project), so they aren't double-counted.
 5. `PairFinder` groups rows by project, finds all pairs whose
    periods overlap, and accumulates days per (pair, project).
@@ -72,8 +72,8 @@ Sample input: `employeess.csv`, sample.csv
 
 ## Output
 
-Shows the pair(s) with the highest total days across all their
-common projects, plus a table with each project and time
+ Shows the pair(s) with the highest total days across all their
+   common projects, plus a table with each project and time
 
 
  Design notes:
@@ -81,12 +81,12 @@ common projects, plus a table with each project and time
   Six classes:
 
 - `DateParser` — knows nothing about CSVs, only about date strings.
-- `CsvReader` — knows nothing about projects or pairs, only how to
+- `CsvFileReader` — knows nothing about projects or pairs, only how to
   turn a file into clean rows.
- - `IntervalMerger` — pure function on an array of rows.
- - `PairFinder` — pure function on an array of rows.
+ - `TimeCombiner` — class calculating on an array of rows.
+ - `PairFinder` — same function as previous, calculate arrays.
  - `Dashboard` — knows nothing about parsing or math, only HTML.
-- `index.php` — the only place that knows the order.
+- `index.php` — the only place that knows the order.entry point
 
 
  Some problems you could face, try starting the project: 
