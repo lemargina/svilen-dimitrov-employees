@@ -3,7 +3,7 @@ namespace App;
 
 class DateParser
 {
-    private const FORMATS = [
+    private $formats  = [
         'Ymd',
         'Y-m-d',
         'Y/m/d',
@@ -47,7 +47,7 @@ class DateParser
             return date('Y-m-d', (int) $date);
         }
 
-        foreach (self::FORMATS as $f) {
+        foreach ($formats as $f) {
             $d = \DateTime::createFromFormat('!' . $f, $date);
             if ($d && $d->format($f) === $date) {
                 return $d->format('Y-m-d');
