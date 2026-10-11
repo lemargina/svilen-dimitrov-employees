@@ -42,7 +42,7 @@ Then run:
     style.css               styling
     
         src/DateParser.php      normalizes any date string to Y-m-d
-        src/CsvReader.php       reads the CSV into an array of rows
+        src/CsvFileReader.php       reads the CSV into an array of rows
         src/TimeCombiner.php  merges overlapping periods per (emp, project)
         src/PairFinder.php    finds overlapping pairs per project
        src/Dashboard.php          picks the winner and prints the HTML
