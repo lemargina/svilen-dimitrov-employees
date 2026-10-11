@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-class CsvReader
+class CsvFileReader
 {
     /** @var DateParser */
     private $dates;
