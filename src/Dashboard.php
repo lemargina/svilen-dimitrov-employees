@@ -20,14 +20,21 @@ class Dashboard
 
         $score = [];
         foreach ($projects as $key => $byProject) {
-            $score[$key] = self::MODE === 'single'
-                ? max($byProject)
-                : array_sum($byProject);
+            $score[$key] = self::MODE === 'single' ? max($byProject) : array_sum($byProject);
         }
 
         $best = max($score);
         $winners = array_keys($score, $best);
-        usort($winners, fn($a, $b) => $ids[$a] <=> $ids[$b]);
+        usort($winners, function ($firstPair, $secondPair) use ($ids) {
+            [$firstEmployeeA, $firstEmployeeB] = $ids[$firstPair];
+            [$secondEmployeeA, $secondEmployeeB] = $ids[$secondPair];
+
+            if ($firstEmployeeA !== $secondEmployeeA) {
+                return $firstEmployeeA <=> $secondEmployeeA;
+            }
+
+            return $firstEmployeeB <=> $secondEmployeeB;
+        });
 
         $this->summary($winners, $ids, $projects, $best);
         $this->table($winners, $ids, $projects);
