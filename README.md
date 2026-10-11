@@ -47,7 +47,7 @@ and submit. Stop the server with Ctrl+C.
         DateParser.php      normalizes any date string to Y-m-d
         CsvReader.php       reads the CSV into an array of rows
         IntervalMerger.php  merges overlapping periods per (emp, project)
-        PairAnalyzer.php    finds overlapping pairs per project
+        PairFinder.php    finds overlapping pairs per project
         Report.php          picks the winner and prints the HTML
 
 ## CSV format
@@ -73,7 +73,7 @@ Sample input: `employeess.csv`.
    an array of clean rows: `['emp','project','from','to','start','end']`.
 4. `IntervalMerger` sorts and merges overlapping periods for the
    same (employee, project), so they aren't double-counted.
-5. `PairAnalyzer` groups rows by project, finds all pairs whose
+5. `PairFinder` groups rows by project, finds all pairs whose
    periods overlap, and accumulates days per (pair, project).
 6. `Report` sums days per pair, finds the maximum, and prints
    the winners plus a table of their common projects.
@@ -83,44 +83,21 @@ Sample input: `employeess.csv`.
 Shows the pair(s) with the highest total days across all their
 common projects, plus a table with each project and its contribution.
 
-## Notes and gotchas
-
-- **Days are counted inclusively.** A one-day period (from = to)
-  counts as 1 day.
-- **DST-safe day counting.** `PairAnalyzer::overlapDays()` uses
-  calendar arithmetic, not `(end - start) / 86400`, because dividing
-  by 86400 loses an hour across a DST transition and can round down
-  by one day. Do not "simplify" it back.
-- **String vs int IDs.** EmpID/ProjectID come from CSV as strings.
-  They are cast to `(int)` before building the pair key so that
-  `'7'` and `'15'` sort numerically.
-- **Pair key is `minID-maxID`.** A pair is always stored with the
-  smaller ID first, so the same two people are never counted twice.
-- **Same pair on the same project twice.** Two separate non-overlapping
-  periods for the same (employee, project) survive the merge and their
-  days are added together in `PairAnalyzer`.
-- **`Report::MODE`** is a constant: `'total'` (sum across all projects)
-  or `'single'` (longest single project). Change it in `Report.php`.
-- **`display_errors` is off** in `index.php`. If you see a blank page,
-  flip it to `'1'` temporarily, or check the PHP error log.
-- **No MIME/size validation** on the upload — it's an internal tool.
-  Add `mime_content_type()` and a size check if you expose it.
 
 ## Design notes
 
-Why these six classes:
+Six classes:
 
 - `DateParser` — knows nothing about CSVs, only about date strings.
 - `CsvReader` — knows nothing about projects or pairs, only how to
   turn a file into clean rows.
 - `IntervalMerger` — pure function on an array of rows.
-- `PairAnalyzer` — pure function on an array of rows.
+- `PairFinder` — pure function on an array of rows.
 - `Report` — knows nothing about parsing or math, only HTML.
 - `index.php` — the only place that knows the order.
 
 Each class can be unit-tested in isolation. There are no interfaces,
-no DI container, no repositories — none of them would earn their
-keep for a script this size.
+no DI container, no repositories.
 
 ## Common issues
 
@@ -128,5 +105,5 @@ keep for a script this size.
 - `vendor/autoload.php not found` — run `composer install`.
 - Blank page after upload — set `display_errors` to `'1'` in `index.php`.
 - Port 8000 busy — use `php -S localhost:8080`.
-- Result off by one day — check `PairAnalyzer::overlapDays()`. It must
+- Result off by one day — check `PairFinder::overlapDays()`. It must
   use calendar math, not seconds / 86400.
