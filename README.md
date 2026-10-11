@@ -57,13 +57,8 @@ and submit. Stop the server with Ctrl+C.
 - Header row is skipped automatically (non-numeric first two columns).
 - EmpID and ProjectID must be integers. Anything else is ignored.
 - `DateTo` accepts several formats. `NULL` (case-insensitive) means today.
-- An **empty** `DateTo` is treated as invalid and the row is skipped.
-- `DateFrom` and `DateTo` accept: Y-m-d, d/m/Y, d.m.Y, Ymd,
-  Y-m-d H:i:s, "M j Y", "F j, Y", Unix timestamp, etc.
-- Overlapping periods for the same (employee, project) are merged
-  before counting.
 
-Sample input: `employeess.csv`.
+Sample input: `employeess.csv`, sample.csv
 
 ## How it works
 
@@ -81,12 +76,12 @@ Sample input: `employeess.csv`.
 ## Output
 
 Shows the pair(s) with the highest total days across all their
-common projects, plus a table with each project and its contribution.
+common projects, plus a table with each project and time
 
 
-## Design notes
+ Design notes:
 
-Six classes:
+   Six classes:
 
 - `DateParser` — knows nothing about CSVs, only about date strings.
 - `CsvReader` — knows nothing about projects or pairs, only how to
@@ -96,14 +91,13 @@ Six classes:
 - `Report` — knows nothing about parsing or math, only HTML.
 - `index.php` — the only place that knows the order.
 
-Each class can be unit-tested in isolation. There are no interfaces,
-no DI container, no repositories.
 
-## Common issues
+ Some problems you could face, try starting the project
 
 - `Class "App\..." not found` — run `composer dump-autoload`.
 - `vendor/autoload.php not found` — run `composer install`.
-- Blank page after upload — set `display_errors` to `'1'` in `index.php`.
 - Port 8000 busy — use `php -S localhost:8080`.
 - Result off by one day — check `PairFinder::overlapDays()`. It must
   use calendar math, not seconds / 86400.
+
+  
