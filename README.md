@@ -76,18 +76,6 @@ Sample input: `employeess.csv`, sample.csv
    common projects, plus a table with each project and time
 
 
- Design notes:
-
-  Six classes:
-
-- `DateParser` — knows nothing about CSVs, only about date strings.
-- `CsvFileReader` — knows nothing about projects or pairs, only how to
-  turn a file into clean rows.
- - `TimeCombiner` — class calculating on an array of rows.
- - `PairFinder` — same function as previous, calculate arrays.
- - `Dashboard` — knows nothing about parsing or math, only HTML.
-- `index.php` — the only place that knows the order.entry point
-
 At the very end of repo,  there is a single file called zadacha_withoutFRONTEND.php, which is CLI procedural version of task.
 You can start it by going to it by cmd, and write: php -q  zadacha_withoutFRONTEND.php
 The first line in the file is called $filename where your put your sample.csv like this:  $filename="sample.csv"
