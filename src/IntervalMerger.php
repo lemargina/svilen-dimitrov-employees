@@ -6,17 +6,21 @@ class IntervalMerger
     
 public function merge(array $rows): array
 {
-    // 1. Sort rows by employee, project, and start date.
-    usort($rows, function ($a, $b) {
-        if ($a['emp'] !== $b['emp']) {
-            return $a['emp'] <=> $b['emp'];
-        }
+   
+   usort($rows, function ($a, $b) {
+    if ($a['emp'] !== $b['emp']) {
+        return $a['emp'] < $b['emp'] ? -1 : 1;
+    }
 
-        if ($a['project'] !== $b['project']) {
-            return $a['project'] <=> $b['project'];
-        }
+    if ($a['project'] !== $b['project']) {
+        return $a['project'] < $b['project'] ? -1 : 1;
+    }
 
-        return $a['start'] <=> $b['start'];
+    if ($a['start'] !== $b['start']) {
+        return $a['start'] < $b['start'] ? -1 : 1;
+    }
+
+    return 0;
     });
 
     $merged = [];
