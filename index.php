@@ -3,7 +3,7 @@
 date_default_timezone_set('UTC');
 require __DIR__ . '/vendor/autoload.php';
 
-use App\CsvReader;
+use App\CsvFileReader;
 use App\DateParser;
 use App\TimeCombiner;
 use App\PairFinder;
@@ -38,7 +38,7 @@ $tmpPath  = $_FILES['csv']['tmp_name'];
 $origName = $_FILES['csv']['name'];
 
 $parser = new DateParser();
-$reader = new CsvReader($parser);
+$reader = new CsvFileReader($parser);
 $rows   = $reader->read($tmpPath);
 
 $rows = (new TimeCombiner())->merge($rows);
