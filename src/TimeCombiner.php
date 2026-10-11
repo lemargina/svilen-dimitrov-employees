@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-class IntervalMerger
+class TimeCombiner
 {
     
 public function merge(array $rows): array
