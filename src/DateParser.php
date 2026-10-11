@@ -47,7 +47,7 @@ class DateParser
             return date('Y-m-d', (int) $date);
         }
 
-        foreach ($formats as $f) {
+        foreach ($this->formats as $f) {
             $d = \DateTime::createFromFormat('!' . $f, $date);
             if ($d && $d->format($f) === $date) {
                 return $d->format('Y-m-d');
